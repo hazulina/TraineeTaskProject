@@ -6,7 +6,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.Random;
@@ -42,6 +41,19 @@ class ListForPracticeTest {
         givenList.addElementToIndex(expectedAnswer, givenIndex);
         //then
         assertThat(givenList.getElementByIndex(givenIndex)).as(description).isEqualTo(expectedAnswer);
+    }
+
+    @DisplayName("should add object to List on 0 index - correct Test")
+    @ParameterizedTest(name = "{displayName} [{index}] {0}")
+    @MethodSource("givenArgumentsForObjectAddToIndexCorrectTest")
+    void addObjectToIndexTest(String description, ListForPractice<Object> givenList) {
+        //given
+        //when
+        for (int i = 0; i < 10000; i++) {
+            givenList.addElementToIndex(new Object(), 0);
+        }
+        //then
+        assertThat(givenList.getSize()).as(description).isEqualTo(10000);
     }
 
     @DisplayName("should throw IndexOutOfBoundsException - addElementToIndexWrongTest")
@@ -195,6 +207,12 @@ class ListForPracticeTest {
                 arguments("Integer List", 1, generateIntegerList(3), 73),
                 arguments("Double List", 4, generateDoubleList(5), 2.75),
                 arguments("Object List", 0, generateObjectList(1), "java")
+        );
+    }
+
+    static Stream<Arguments> givenArgumentsForObjectAddToIndexCorrectTest() {
+        return Stream.of(
+                arguments("Object List", generateObjectList(0))
         );
     }
 

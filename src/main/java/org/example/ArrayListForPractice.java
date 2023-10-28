@@ -82,7 +82,9 @@ public class ArrayListForPractice<T> implements ListForPractice<T> {
      */
     @Override
     public void addElementToIndex(T element, int index) {
-        Objects.checkIndex(index, size);
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("incorrect index");
+        }
         array = isArrayReadyToGrow(array);
         moveElementsRight(index);
         array[index] = element;
